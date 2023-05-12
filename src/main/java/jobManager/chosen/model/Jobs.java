@@ -44,4 +44,6 @@ public class Jobs {
     public long getId() {
         return id;
     }
+
+
 }

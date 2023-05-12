@@ -1,8 +1,11 @@
 package jobManager.chosen.controller;
 
 import jobManager.chosen.model.Jobs;
+import jobManager.chosen.repo.JobsRepository;
 import jobManager.chosen.service.JobsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,14 +15,17 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/jobs")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://127.0.0.1:5173")
 public class JobsController {
     @Autowired
     private JobsService jobsService;
+    @Autowired
+    private JobsRepository jobsRepository;
 
     @GetMapping
-    public ResponseEntity<List<Jobs>> getAllJobs(){
-        return new ResponseEntity<List<Jobs>>( jobsService.allJobs(), HttpStatus.OK);
+    public Page<Jobs> getAllJobs(Pageable p){
+
+        return jobsRepository.findAll(p);
     }
 
     @GetMapping("/{id}")
