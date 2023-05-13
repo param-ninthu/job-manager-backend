@@ -23,9 +23,12 @@ public class JobsController {
     private JobsRepository jobsRepository;
 
     @GetMapping
-    public Page<Jobs> getAllJobs(Pageable p){
-
-        return jobsRepository.findAll(p);
+    public Page<Jobs> getAllJobs(Pageable pageable, @RequestParam(required = false) String search) {
+        if (search != null && !search.isEmpty()) {
+            return jobsRepository.findByName(search, pageable);
+        } else {
+            return jobsRepository.findAll(pageable);
+        }
     }
 
     @GetMapping("/{id}")
